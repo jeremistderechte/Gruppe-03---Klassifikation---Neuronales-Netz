@@ -8,7 +8,10 @@ Created on Thu Jan 12 14:06:55 2023
 import pandas as pd
 import numpy as np
 from collections import Counter
-
+# =============================================================================
+# import os
+# os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
+# =============================================================================
 import tensorflow as tf
 
 import keras
@@ -21,11 +24,9 @@ from sklearn.preprocessing import MinMaxScaler
 def factorize_label(dataframe):
     int_label_list_sex, string_factorize_sex = pd.factorize(dataframe["sex"])
     int_label_list_pay, string_factorize_pay = pd.factorize(dataframe["payment_type"])
-    
     for i in range(len(dataframe.index)):
         dataframe.at[i, "sex"] = int_label_list_sex[i]
         dataframe.at[i, "payment_type"] = int_label_list_pay[i]
-    
     
     return dataframe, string_factorize_sex, string_factorize_pay
 
@@ -72,6 +73,8 @@ df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_dat
 
 df_data_new = df_data_new.sample(frac=1)
 
+df_data_new.to_csv("cleanend.csv")
+
 train, test = train_test_split(df_data_new, test_size=0.2, random_state=42)
 
 print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
@@ -84,25 +87,48 @@ age = np.asarray(train["age"])
 
 age = MinMaxScaler(feature_range=(0,1)).fit_transform(age.reshape(-1,1))
 
+age = age.reshape(788,)
+
 sex = np.asarray(train["sex"].astype("int32"))
 
 payment_type = np.asarray(train["payment_type"].astype("int32"))
+
+X = np.stack((age, sex, payment_type), axis=-1)
 
 
 #Y
 output = np.asarray(train["was_canceled"])
 
 
-input1 = keras.layers.Input(shape=(1,))
-input2 = keras.layers.Input(shape=(1,))
-input3 = keras.layers.Input(shape=(1,))
-merged = keras.layers.Concatenate(axis=1)([input1, input2, input3])
-dense1 = keras.layers.Dense(2, input_dim=3, activation=keras.activations.sigmoid, use_bias=True)(merged)
-output1 = keras.layers.Dense(1, activation=keras.activations.relu, use_bias=True)(dense1)
-model = keras.models.Model(inputs=[input1, input2, input3], outputs=output1)
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# =============================================================================
+# input1 = keras.layers.Input(shape=(1,))
+# input2 = keras.layers.Input(shape=(1,))
+# input3 = keras.layers.Input(shape=(1,))
+# merged = keras.layers.Concatenate(axis=1)([input1, input2, input3])
+# dense1 = keras.layers.Dense(2, input_dim=3, activation=keras.activations.sigmoid, use_bias=True)(merged)
+# output1 = keras.layers.Dense(1, activation=keras.activations.relu, use_bias=True)(dense1)
+# model = keras.models.Model(inputs=[input1, input2, input3], outputs=output1)
+# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+# =============================================================================
+
+
+settings = [4, 8, 16]
+
+for setting in settings:  
+    model = Sequential()
+    model.add(tf.keras.layers.Dense(setting, input_shape=(3,)))
+    model.add(tf.keras.layers.Dense(setting/2,activation='softmax'))
+
+model.compile(loss='mse', optimizer='sgd', metrics=['accuracy'])
 print(model.summary())
 
-model.fit([age, sex, payment_type],output, batch_size=16, epochs=100)
+
+#model.fit(X, output, batch_size=1, epochs=120)
+
+#test = np.stack(([23], [1], [2]), axis=-1)
+
+#print(model.predict(test))
+
+#model.fit([age, sex, payment_type],output, batch_size=4, epochs=10000)
 
 
