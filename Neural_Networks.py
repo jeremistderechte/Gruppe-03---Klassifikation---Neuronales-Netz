@@ -14,12 +14,20 @@ from collections import Counter
 # =============================================================================
 import tensorflow as tf
 
+import re
+
 import keras
 
+from datetime import datetime
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+
+from sklearn.datasets import make_classification
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
 
 def factorize_label(dataframe):
     int_label_list_sex, string_factorize_sex = pd.factorize(dataframe["sex"])
@@ -65,6 +73,32 @@ df_data_new["was_canceled"] = was_canceled
 #print(Counter(df_data_new["postal_code"][df_data_new["was_canceled"] == 1])) 
 #print(Counter(df_data_new["cancel_date"][df_data_new["was_canceled"] == 1]))
 
+
+#Converting String to datetime
+storno_cleaned_list = []
+last_cleaned_list = []
+for date_cancel, date_start in zip(df_data_new["cancel_date"][df_data_new["was_canceled"] == 1], 
+                                   df_data_new["last_transaction"][df_data_new["was_canceled"] == 1],):
+    date = re.sub(r'.[0-9][0-9][0-9]$', '', date_cancel)
+    storno_cleaned_list.append(datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
+    date = re.sub(r'.[0-9][0-9][0-9]$', '', date_start)
+    last_cleaned_list.append(datetime.strptime(date, '%Y-%m-%d %H:%M:%S'))
+    
+
+df_dates = pd.DataFrame(columns=['last_date', 'cancel_date'])
+df_dates['last_date'] = last_cleaned_list
+df_dates['cancel_date'] = storno_cleaned_list
+
+difference_list_year = []
+differnce_list_month = []
+differnce_list_day = []
+for i, row in df_dates.iterrows():
+    difference_list_year.append(abs(row['cancel_date'].year - row['last_date'].year))
+    differnce_list_month.append(abs(row['cancel_date'].month - row['last_date'].month))
+    differnce_list_day.append(abs(row['cancel_date'].day - row['last_date'].day))
+    
+
+
 #Drop obsolete columns
 df_data_new = df_data_new.drop(["last_transaction", "cancel_date", "postal_code"], axis=1)
 
@@ -73,7 +107,9 @@ df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_dat
 
 df_data_new = df_data_new.sample(frac=1)
 
-df_data_new.to_csv("cleanend.csv")
+
+
+#df_data_new.to_csv("cleanend.csv")
 
 train, test = train_test_split(df_data_new, test_size=0.2, random_state=42)
 
@@ -81,7 +117,7 @@ print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
 
 #Neural Network
 
-#X
+#X-train
 
 age = np.asarray(train["age"])
 
@@ -95,9 +131,59 @@ payment_type = np.asarray(train["payment_type"].astype("int32"))
 
 X = np.stack((age, sex, payment_type), axis=-1)
 
+#X-Test
 
-#Y
+age_test = np.asarray(test["age"])
+
+age_test = MinMaxScaler(feature_range=(0,1)).fit_transform(age_test.reshape(-1,1))
+
+age_test = age_test.reshape(198,)
+
+sex_test = np.asarray(test["sex"].astype("int32"))
+
+payment_type_test = np.asarray(test["payment_type"].astype("int32"))
+X_Test = np.stack((age_test, sex_test, payment_type_test), axis=-1)
+
+
+#Y-Train
 output = np.asarray(train["was_canceled"])
+
+#Y-Test
+y_test = (test['was_canceled']>0.1)
+
+
+
+
+
+model = Sequential()
+model.add(Dense(60, input_shape=(3,), activation='relu'))
+model.add(Dense(30, activation='softmax'))
+model.add(Dense(1, activation='sigmoid'))
+
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+print(model.summary())
+
+
+model.fit(X, output, batch_size=1, epochs=100)
+
+test_predict = model.predict(X_Test)
+test_predict =(test_predict>0.5)
+
+y_test = (test['was_canceled']>0.1)
+
+
+
+
+
+cm = confusion_matrix(y_test, test_predict, labels=[0,1])
+disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                              display_labels=['nicht_storniert','storniert'])
+
+disp.plot(cmap=plt.cm.Blues)
+
+plt.show()
+
+
 
 
 # =============================================================================
@@ -111,19 +197,6 @@ output = np.asarray(train["was_canceled"])
 # model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # =============================================================================
 
-
-settings = [4, 8, 16]
-
-for setting in settings:  
-    model = Sequential()
-    model.add(tf.keras.layers.Dense(setting, input_shape=(3,)))
-    model.add(tf.keras.layers.Dense(setting/2,activation='softmax'))
-
-model.compile(loss='mse', optimizer='sgd', metrics=['accuracy'])
-print(model.summary())
-
-
-#model.fit(X, output, batch_size=1, epochs=120)
 
 #test = np.stack(([23], [1], [2]), axis=-1)
 
