@@ -28,6 +28,8 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import precision_score, recall_score, accuracy_score
+
 
 def factorize_label(dataframe):
     int_label_list_sex, string_factorize_sex = pd.factorize(dataframe["sex"])
@@ -152,24 +154,68 @@ output = np.asarray(train["was_canceled"])
 y_test = (test['was_canceled']>0.1)
 
 
+neuron_list = [128, 64, 32, 16, 8, 4, 2]
+
+batch_size_list = [1, 2, 4, 8, 16] #16 16 90
+
+epoch_list = [10, 30, 90, 180]
 
 
 
-model = Sequential()
-model.add(Dense(60, input_shape=(3,), activation='relu'))
-model.add(Dense(30, activation='softmax'))
-model.add(Dense(1, activation='sigmoid'))
+result_list = []
 
-model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-print(model.summary())
+parameter_list = []
 
+df_results_neural_network = pd.DataFrame(columns=["parameter", "result"])
 
-model.fit(X, output, batch_size=1, epochs=100)
+def evaluate_model(trained_model, test_data_x, test_data_y):
+    test_predict_y = trained_model.predict(test_data_x)
+    test_predict_y = (test_predict_y>0.5)
+    
+    precision = precision_score(test_data_y, test_predict_y)
+    recall = recall_score(test_data_y, test_predict_y)
+    accuracy = accuracy_score(test_data_y, test_predict_y)
+    
+    return [precision, recall, accuracy]
+    
+
+    
+
+for neuron in neuron_list:
+    model = Sequential()
+    model.add(Dense(neuron, input_shape=(3,), activation='relu'))
+    model.add(Dense(neuron/2, activation='softmax'))
+    
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    #print(model.summary())
+    
+    for batch_size in batch_size_list:
+        for epoch in epoch_list:
+            model.fit(X, output, batch_size=batch_size, epochs=epoch, use_multiprocessing=True)
+            
+            print("Neurons:", neuron, "Batch_Size:", batch_size,"Epochs:", epoch, "\n")
+            
+            
+            
+            result = evaluate_model(model, X_Test, (test['was_canceled']>0.5))
+            
+            #result = model.evaluate(x=X_Test, y=y_test)
+            
+            result_list.append(result)
+            
+            parameter_list.append([neuron, batch_size, epoch])
+            
+            print(result)
+            
+            
+df_results_neural_network["result"] =  result_list
+df_results_neural_network["parameter"] = parameter_list
+
 
 test_predict = model.predict(X_Test)
 test_predict =(test_predict>0.5)
 
-y_test = (test['was_canceled']>0.1)
+y_test = (test['was_canceled']>0.5)
 
 
 
