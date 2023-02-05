@@ -8,11 +8,10 @@ Created on Thu Jan 12 14:06:55 2023
 import pandas as pd
 import numpy as np
 from collections import Counter
-# =============================================================================
-# import os
-# os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
-# =============================================================================
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
 import tensorflow as tf
+import pickle
 
 import re
 
@@ -115,6 +114,8 @@ df_data_new = df_data_new.sample(frac=1)
 
 train, test = train_test_split(df_data_new, test_size=0.2, random_state=42)
 
+test.to_csv("./test_data.csv")
+
 print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
 
 #Neural Network
@@ -123,9 +124,9 @@ print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
 
 age = np.asarray(train["age"])
 
-age = MinMaxScaler(feature_range=(0,1)).fit_transform(age.reshape(-1,1))
+#age = MinMaxScaler(feature_range=(0,1)).fit_transform(age.reshape(-1,1))
 
-age = age.reshape(788,)
+#age = age.reshape(788,)
 
 sex = np.asarray(train["sex"].astype("int32"))
 
@@ -137,9 +138,9 @@ X = np.stack((age, sex, payment_type), axis=-1)
 
 age_test = np.asarray(test["age"])
 
-age_test = MinMaxScaler(feature_range=(0,1)).fit_transform(age_test.reshape(-1,1))
+#age_test = MinMaxScaler(feature_range=(0,1)).fit_transform(age_test.reshape(-1,1))
 
-age_test = age_test.reshape(198,)
+#age_test = age_test.reshape(198,)
 
 sex_test = np.asarray(test["sex"].astype("int32"))
 
@@ -154,19 +155,27 @@ output = np.asarray(train["was_canceled"])
 y_test = (test['was_canceled']>0.1)
 
 
-neuron_list = [128, 64, 32, 16, 8, 4, 2]
-
-batch_size_list = [1, 2, 4, 8, 16] #16 16 90
-
-epoch_list = [10, 30, 90, 180]
+# Best result: 16 16 90
 
 
+# Write comment into list to test best parameters
 
-result_list = []
+neuron_list = [16] #128, 64, 32, 16, 8, 4, 2
+
+batch_size_list = [16]# 1, 2, 4, 8, 16
+
+epoch_list = [90] # 10, 30, 90, 180
+
+
+
+precision_list = []
+recall_list = []
+accuracy_list = []
+
 
 parameter_list = []
 
-df_results_neural_network = pd.DataFrame(columns=["parameter", "result"])
+df_results_neural_network = pd.DataFrame(columns=["parameter", "precision", "recall", "accuracy"])
 
 def evaluate_model(trained_model, test_data_x, test_data_y):
     test_predict_y = trained_model.predict(test_data_x)
@@ -176,7 +185,7 @@ def evaluate_model(trained_model, test_data_x, test_data_y):
     recall = recall_score(test_data_y, test_predict_y)
     accuracy = accuracy_score(test_data_y, test_predict_y)
     
-    return [precision, recall, accuracy]
+    return precision, recall, accuracy
     
 
     
@@ -185,6 +194,7 @@ for neuron in neuron_list:
     model = Sequential()
     model.add(Dense(neuron, input_shape=(3,), activation='relu'))
     model.add(Dense(neuron/2, activation='softmax'))
+    model.add(Dense(1, activation="sigmoid"))
     
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
     #print(model.summary())
@@ -197,18 +207,22 @@ for neuron in neuron_list:
             
             
             
-            result = evaluate_model(model, X_Test, (test['was_canceled']>0.5))
+            precision, recall, accuracy = evaluate_model(model, X_Test, (test['was_canceled']>0.5))
+            
+            
+            precision_list.append(precision)
+            recall_list.append(recall)
+            accuracy_list.append(accuracy)
             
             #result = model.evaluate(x=X_Test, y=y_test)
-            
-            result_list.append(result)
-            
+                        
             parameter_list.append([neuron, batch_size, epoch])
+        
             
-            print(result)
             
-            
-df_results_neural_network["result"] =  result_list
+df_results_neural_network["precision"] =  precision_list
+df_results_neural_network["recall"] =  recall_list
+df_results_neural_network["accuracy"] =  accuracy_list
 df_results_neural_network["parameter"] = parameter_list
 
 
@@ -228,6 +242,8 @@ disp = ConfusionMatrixDisplay(confusion_matrix=cm,
 disp.plot(cmap=plt.cm.Blues)
 
 plt.show()
+
+model.save("./models/sonnenschein")
 
 
 
