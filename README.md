@@ -3,7 +3,7 @@
 Erster Code mit Python und die Daten
 
 # Benoetigte Bibliotheken
-- sci-kit learn
+- scikit-learn
 - pandas
 - tensorflow (cpu oder gpu)
 - numpy
