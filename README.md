@@ -7,6 +7,7 @@ Erster Code mit Python und die Daten
 - pandas
 - tensorflow (cpu oder gpu)
 - numpy
+- matplotlib
 
 # Erstes Ergebnis (Ergebnis variiert je nach Run)
 
