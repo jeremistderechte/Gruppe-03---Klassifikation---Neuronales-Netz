@@ -20,4 +20,5 @@ Accuracy: 0.812
 
 # Threshold-Auswertung
 
-![image](https://user-images.githubusercontent.com/116145963/216841190-dbd1b910-c088-4e26-9f36-57de900db66f.png)
+![image](https://user-images.githubusercontent.com/116145963/217063150-9f0ebbfb-2dfc-4796-8f7a-00198e368c35.png)
+
