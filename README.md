@@ -24,3 +24,7 @@ Accuracy: 0.812
 ![image](https://user-images.githubusercontent.com/116145963/217063150-9f0ebbfb-2dfc-4796-8f7a-00198e368c35.png)
 
 Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Kosten von predictions weniger FPs generiert, was für deiesen Use Case sinnvoll sein kann.
+
+# Work in progress
+- Demo erstellen
+- Hyperparametertraining
