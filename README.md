@@ -8,6 +8,7 @@ Erster Code mit Python und die Daten
 - tensorflow (cpu oder gpu)
 - numpy
 - matplotlib
+- flask (benoetigt fuer Demo)
 
 # Erstes Ergebnis (Ergebnis variiert je nach Run)
 
@@ -26,5 +27,5 @@ Accuracy: 0.812
 Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Kosten von predictions weniger FPs generiert, was für deiesen Use Case sinnvoll sein kann.
 
 # Work in progress
-- Demo erstellen
+- Demo erstellen (Ist im Ordner Demo)
 - Hyperparametertraining
