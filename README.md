@@ -29,3 +29,31 @@ Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Koste
 # Work in progress
 - Demo erstellen (Ist im Ordner Demo)
 - Hyperparametertraining
+
+
+
+
+
+# Organisation:
+## Theorie
+- 20 Minuten
+
+### Literaturrecherche 
+- Hanna hat schon damit angefangen
+	- Zeitstrahl für PNN
+	- Einordnung von Neuronalen Netzen
+
+## Praxis 
+- 20 Minuten
+
+### Knime
+- Eike hat damit angefangen
+
+### Python Code
+- Jeremy hat damit angefangen (fast fertig)
+- Demo, Praxis Beispiel
+
+
+# Präsentation an sich
+- Hanna kann das
+- Hanna und Eike?
