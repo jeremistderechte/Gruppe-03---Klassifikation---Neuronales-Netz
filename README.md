@@ -34,7 +34,17 @@ Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Koste
 - Hyperparametertraining
 
 
+<details><summary>CLICK ME</summary>
+<p>
 
+#### We can hide anything, even code!
+
+```ruby
+   puts "Hello World"
+```
+
+</p>
+</details>
 
 
 # Organisation:
