@@ -10,6 +10,9 @@ Erster Code mit Python und die Daten
 - matplotlib
 - flask (benoetigt fuer Demo)
 
+# Demo starten
+- Repository clonen oder downloaden und Terminal/Shell im Ordner "Demo" öffnen. Dann den Befehl "flask run" eigeben, es sollte sich automatisch auf localhost eine Website öffnen.
+
 # Erstes Ergebnis (Ergebnis variiert je nach Run)
 
 ![image](https://user-images.githubusercontent.com/116145963/216841121-0a8cfe52-717a-4e8d-8ba4-6e289f7c4b12.png)
