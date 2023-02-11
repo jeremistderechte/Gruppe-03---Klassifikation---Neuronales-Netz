@@ -19,15 +19,9 @@ Erster Code mit Python und die Daten
 
 | metric | percentage |
 | --- | --- |
-| precision | 78.1% (0.781) |
-| recall | 86.3% (0.863) |
-| accuracy | 81.2% (0.812) |
-
-Precision: 0.781
-
-Recall: 0.863
-
-Accuracy: 0.812
+| precision | 0.781 |
+| recall | 0.863 |
+| accuracy | 0.812 |
 
 # Threshold-Auswertung
 
