@@ -11,7 +11,10 @@ Erster Code mit Python und die Daten
 - flask (benoetigt fuer Demo)
 
 # Demo starten
-- Repository clonen oder downloaden und Terminal/Shell im Ordner "Demo" öffnen. Dann den Befehl "flask run" eigeben, es sollte sich automatisch auf localhost eine Website öffnen.
+1. Repository clonen
+2. Terminal/Shell in Ordner `Demo` öffnen
+3. `flask run` eingeben
+4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000)
 
 # Erstes Ergebnis (Ergebnis variiert je nach Run)
 
