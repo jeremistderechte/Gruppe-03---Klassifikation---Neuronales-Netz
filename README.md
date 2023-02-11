@@ -17,6 +17,12 @@ Erster Code mit Python und die Daten
 
 ![image](https://user-images.githubusercontent.com/116145963/216841121-0a8cfe52-717a-4e8d-8ba4-6e289f7c4b12.png)
 
+| metric | percentage |
+| --- | --- |
+| precision | 78.1% (0.781) |
+| recall | 86.3% (0.863) |
+| accuracy | 81.2% (0.812) |
+
 Precision: 0.781
 
 Recall: 0.863
