@@ -20,7 +20,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 ![image](https://user-images.githubusercontent.com/116145963/216841121-0a8cfe52-717a-4e8d-8ba4-6e289f7c4b12.png)
 
-| metric | percentage |
+| metric | result |
 | --- | --- |
 | precision | 0.781 |
 | recall | 0.863 |
