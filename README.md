@@ -1,6 +1,6 @@
 # Gruppe-03-Klassifikation-Neuronales-Netz
 
-Erster Code mit Python und die Daten
+Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 # Benoetigte Bibliotheken
 - scikit-learn
@@ -16,7 +16,7 @@ Erster Code mit Python und die Daten
 3. `flask run` eingeben
 4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000)
 
-# Erstes Ergebnis (Ergebnis variiert je nach Run)
+# Training
 
 ![image](https://user-images.githubusercontent.com/116145963/216841121-0a8cfe52-717a-4e8d-8ba4-6e289f7c4b12.png)
 
@@ -26,17 +26,13 @@ Erster Code mit Python und die Daten
 | recall | 0.863 |
 | accuracy | 0.812 |
 
-# Threshold-Auswertung
+# Evaluation (threshold)
 
 ![image](https://user-images.githubusercontent.com/116145963/217063150-9f0ebbfb-2dfc-4796-8f7a-00198e368c35.png)
 
-Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Kosten von predictions weniger FPs generiert, was für deiesen Use Case sinnvoll sein kann.
+Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit man auf Kosten von predictions weniger FPs generiert, was für diesen Use Case sinnvoll sein kann.
 
-# Work in progress
-- Demo erstellen (Ist im Ordner Demo)
-- Hyperparametertraining
-
-
+# Sonstiges
 <details><summary>Organisation</summary>
 <p>
 
