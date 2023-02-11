@@ -34,20 +34,9 @@ Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Koste
 - Hyperparametertraining
 
 
-<details><summary>CLICK ME</summary>
+<details><summary>Organisation</summary>
 <p>
 
-#### We can hide anything, even code!
-
-```ruby
-   puts "Hello World"
-```
-
-</p>
-</details>
-
-
-# Organisation:
 ## Theorie
 - 20 Minuten
 
@@ -70,3 +59,9 @@ Man kann mit dem threshold arbeiten, als "Steuerinstrument", damit man auf Koste
 # Präsentation an sich
 - Hanna kann das
 - Hanna und Eike?
+
+</p>
+</details>
+
+
+
