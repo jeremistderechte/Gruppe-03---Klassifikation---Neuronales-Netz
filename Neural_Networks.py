@@ -5,31 +5,29 @@ Created on Thu Jan 12 14:06:55 2023
 @author: Jeremy Barenkamp
 """
 
-import pandas as pd
-import numpy as np
-from collections import Counter
+# Please uncomment, if you want to run model on gpu, 
+# but it is quicker to run it on cpu in this case
+
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
+
+
+import pandas as pd
+import numpy as np
 import tensorflow as tf
-import pickle
-
 import re
-
-import keras
 
 from datetime import datetime
 from keras.models import Sequential
-from keras.layers import Dense, LSTM
+from keras.layers import Dense
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
+#from sklearn.preprocessing import MinMaxScaler
 
-from sklearn.datasets import make_classification
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
-
 from sklearn.metrics import precision_score, recall_score, accuracy_score
 
-
+#Factorization of Label (means "string to int")
 def factorize_label(dataframe):
     int_label_list_sex, string_factorize_sex = pd.factorize(dataframe["sex"])
     int_label_list_pay, string_factorize_pay = pd.factorize(dataframe["payment_type"])
@@ -38,6 +36,19 @@ def factorize_label(dataframe):
         dataframe.at[i, "payment_type"] = int_label_list_pay[i]
     
     return dataframe, string_factorize_sex, string_factorize_pay
+
+#Evaluates model with precision, recall and accuracy
+def evaluate_model(trained_model, test_data_x, test_data_y):
+    test_predict_y = trained_model.predict(test_data_x)
+    test_predict_y = (test_predict_y>0.5)
+    
+    precision = precision_score(test_data_y, test_predict_y)
+    recall = recall_score(test_data_y, test_predict_y)
+    accuracy = accuracy_score(test_data_y, test_predict_y)
+    
+    return precision, recall, accuracy
+
+#data preprocessing
 
 #Adding column if payment was canceled
 df_data = pd.read_csv("./python_datasets/VergangeneBestellungen.csv")
@@ -90,6 +101,7 @@ df_dates = pd.DataFrame(columns=['last_date', 'cancel_date'])
 df_dates['last_date'] = last_cleaned_list
 df_dates['cancel_date'] = storno_cleaned_list
 
+#Transforming date string to datetime type
 difference_list_year = []
 differnce_list_month = []
 differnce_list_day = []
@@ -106,11 +118,13 @@ df_data_new = df_data_new.drop(["last_transaction", "cancel_date", "postal_code"
 #Factorize input
 df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_data_new)
 
-df_data_new = df_data_new.sample(frac=1)
+#df_data_new = df_data_new.sample(frac=1)
 
 
 
 #df_data_new.to_csv("cleanend.csv")
+
+#Train-Test-Split
 
 train, test = train_test_split(df_data_new, test_size=0.2, random_state=42)
 
@@ -160,11 +174,11 @@ y_test = (test['was_canceled']>0.1)
 
 # Write comment into list to test best parameters
 
-neuron_list = [16] #128, 64, 32, 16, 8, 4, 2
+neuron_list = [128, 64, 32, 16, 8, 4, 2] #128, 64, 32, 16, 8, 4, 2
 
-batch_size_list = [16]# 1, 2, 4, 8, 16
+batch_size_list = [1, 2, 4, 8, 16]# 1, 2, 4, 8, 16
 
-epoch_list = [90] # 10, 30, 90, 180
+epoch_list = [5, 10, 30, 90] # 5, 10, 30, 90
 
 
 
@@ -175,25 +189,18 @@ accuracy_list = []
 
 parameter_list = []
 
+
+
 df_results_neural_network = pd.DataFrame(columns=["parameter", "precision", "recall", "accuracy"])
 
-def evaluate_model(trained_model, test_data_x, test_data_y):
-    test_predict_y = trained_model.predict(test_data_x)
-    test_predict_y = (test_predict_y>0.5)
-    
-    precision = precision_score(test_data_y, test_predict_y)
-    recall = recall_score(test_data_y, test_predict_y)
-    accuracy = accuracy_score(test_data_y, test_predict_y)
-    
-    return precision, recall, accuracy
-    
 
+# Neural Network
     
 
 for neuron in neuron_list:
     model = Sequential()
     model.add(Dense(neuron, input_shape=(3,), activation='relu'))
-    model.add(Dense(neuron/2, activation='softmax'))
+    model.add(Dense(neuron/2, activation='relu'))
     model.add(Dense(1, activation="sigmoid"))
     
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
@@ -214,7 +221,6 @@ for neuron in neuron_list:
             recall_list.append(recall)
             accuracy_list.append(accuracy)
             
-            #result = model.evaluate(x=X_Test, y=y_test)
                         
             parameter_list.append([neuron, batch_size, epoch])
         
@@ -233,7 +239,7 @@ y_test = (test['was_canceled']>0.5)
 
 
 
-
+#Ploting confusion matrix
 
 cm = confusion_matrix(y_test, test_predict, labels=[0,1])
 disp = ConfusionMatrixDisplay(confusion_matrix=cm,
@@ -243,27 +249,5 @@ disp.plot(cmap=plt.cm.Blues)
 
 plt.show()
 
-model.save("./models/sonnenschein")
-
-
-
-
-# =============================================================================
-# input1 = keras.layers.Input(shape=(1,))
-# input2 = keras.layers.Input(shape=(1,))
-# input3 = keras.layers.Input(shape=(1,))
-# merged = keras.layers.Concatenate(axis=1)([input1, input2, input3])
-# dense1 = keras.layers.Dense(2, input_dim=3, activation=keras.activations.sigmoid, use_bias=True)(merged)
-# output1 = keras.layers.Dense(1, activation=keras.activations.relu, use_bias=True)(dense1)
-# model = keras.models.Model(inputs=[input1, input2, input3], outputs=output1)
-# model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-# =============================================================================
-
-
-#test = np.stack(([23], [1], [2]), axis=-1)
-
-#print(model.predict(test))
-
-#model.fit([age, sex, payment_type],output, batch_size=4, epochs=10000)
-
-
+#Saving model
+#model.save("./models/sonnenschein")
