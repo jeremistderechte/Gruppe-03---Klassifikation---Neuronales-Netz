@@ -3,7 +3,7 @@
 """
 Created on Tue Feb  7 08:48:22 2023
 
-@author: jeremy
+@author: jeremy barenkamp
 """
 
 #Demo for 'Introduction to data science'
@@ -13,7 +13,7 @@ from tensorflow import keras
 app = Flask(__name__)
 
 
-def return_cancel_proba(age, sex, payment_type):
+def return_cancel_proba(age, sex, payment_type, threshold):
     model = keras.models.load_model('sonnenschein')
     
     #Conversion to numeric numbers
@@ -39,7 +39,6 @@ def return_cancel_proba(age, sex, payment_type):
     
     prediction = model.predict([[age, sex, payment_type]])
     print(prediction)
-    threshold = 0.5
     
     if prediction > threshold:
         result = "Bitte Kunden Angebot schicken"
@@ -56,8 +55,11 @@ def start():
         age = request.form["age"]
         payment_type = request.form["pay_type"]
         gender = request.form["gender"]
-        
-        cancel_prediction = return_cancel_proba(age, gender, payment_type)
+        if request.form.get("prediction_security") == "cautious":
+            threshold = 0.7
+        elif request.form.get("prediction_security") == "risky":
+            threshold = 0.5
+        cancel_prediction = return_cancel_proba(age, gender, payment_type, threshold)
         return render_template('result.html', description=cancel_prediction)
         
     return render_template('demo.html')
