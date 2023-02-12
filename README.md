@@ -64,8 +64,8 @@ Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit
 - Eike hat damit angefangen
 
 ### Python Code
-- Jeremy hat damit angefangen (refactoring)
-- Demo, Praxis Beispiel (Fehlt noch Button, für agressive Angeboite oder normal (threshold)
+- Jeremy hat damit angefangen (fertig, nur noch refactoring)
+- Demo, Praxis Beispiel (fertig)
 
 
 # Präsentation an sich
