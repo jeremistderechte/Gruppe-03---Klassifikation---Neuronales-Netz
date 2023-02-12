@@ -130,7 +130,7 @@ df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_dat
 
 train, test = train_test_split(df_data_new, test_size=0.2, random_state=42)
 
-test.to_csv("./test_data.csv")
+#test.to_csv("./test_data.csv")
 
 print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
 
