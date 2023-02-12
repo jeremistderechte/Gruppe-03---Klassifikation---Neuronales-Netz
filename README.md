@@ -18,6 +18,9 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 ![image](https://user-images.githubusercontent.com/116145963/218327568-8a1a86ca-c2e5-44f1-b3a4-da0dbd6365f3.png)
 
+5. Daten des Kundens eingeben und auf `Abschicken` klicken, um Ergebnis zu bekommen
+6. Neue Seite mit dem Ergebnis sollte sich oeffnen
+
 # Training
 
 ![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png)
