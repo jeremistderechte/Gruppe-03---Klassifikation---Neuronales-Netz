@@ -31,6 +31,9 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 ![image](https://user-images.githubusercontent.com/116145963/218286501-8f00487c-c9f0-45d1-9d61-e0baafade9b4.png)
 
 Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit man auf Kosten von predictions weniger FPs generiert, was für diesen Use Case sinnvoll sein kann.
+
+![image](https://user-images.githubusercontent.com/116145963/218287146-818a328d-6cae-4a87-91cb-5426eef41e64.png)
+
 ## Confusion Matrix mit threshold
 ![threshold_confusion_matrix](https://user-images.githubusercontent.com/116145963/218286477-3d8aed83-c38d-4039-a0ea-61006a32eff8.png)
 
