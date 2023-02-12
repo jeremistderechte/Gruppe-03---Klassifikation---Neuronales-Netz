@@ -18,7 +18,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 # Training
 
-![image](![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png))
+![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png)
 
 | metric | result |
 | --- | --- |
