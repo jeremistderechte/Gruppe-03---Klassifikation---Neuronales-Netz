@@ -18,13 +18,13 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 # Training
 
-![image](https://user-images.githubusercontent.com/116145963/216841121-0a8cfe52-717a-4e8d-8ba4-6e289f7c4b12.png)
+![image](![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png))
 
 | metric | result |
 | --- | --- |
-| precision | 0.781 |
-| recall | 0.863 |
-| accuracy | 0.812 |
+| precision | 0.843 |
+| recall | 0.804 |
+| accuracy | 0.813 |
 
 # Evaluation (threshold)
 
