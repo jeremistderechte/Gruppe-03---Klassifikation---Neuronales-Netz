@@ -5,17 +5,19 @@ Created on Thu Jan 12 14:06:55 2023
 @author: Jeremy Barenkamp
 """
 
-# Please uncomment, if you want to run model on gpu, 
-# but it is quicker to run it on cpu in this case
-
-import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
-
-
 import pandas as pd
 import numpy as np
 import tensorflow as tf
 import re
+
+'''
+Runs on CPU even if compatible gpu is installed, because gpu is slower in this case
+'''
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
+    
+
+
 
 from datetime import datetime
 from keras.models import Sequential
@@ -169,16 +171,16 @@ output = np.asarray(train["was_canceled"])
 y_test = (test['was_canceled']>0.1)
 
 
-# Best result: 16 16 90
+# Best result: 32 64 180
 
 
 # Write comment into list to test best parameters
 
-neuron_list = [128, 64, 32, 16, 8, 4, 2] #128, 64, 32, 16, 8, 4, 2
+neuron_list = [32, 16] #512, 256, 128, 64, 32, 16, 8, 4
 
-batch_size_list = [1, 2, 4, 8, 16]# 1, 2, 4, 8, 16
+batch_size_list = [64]# 1, 2, 4, 8, 16, 32, 64, 128, 256
 
-epoch_list = [5, 10, 30, 90] # 5, 10, 30, 90
+epoch_list = [180] # 5, 10, 30, 90, 180
 
 
 
@@ -208,7 +210,7 @@ for neuron in neuron_list:
     
     for batch_size in batch_size_list:
         for epoch in epoch_list:
-            model.fit(X, output, batch_size=batch_size, epochs=epoch, use_multiprocessing=True)
+            model.fit(X, output, batch_size=batch_size, epochs=epoch, validation_split=0.1, shuffle=True)
             
             print("Neurons:", neuron, "Batch_Size:", batch_size,"Epochs:", epoch, "\n")
             
@@ -237,17 +239,18 @@ test_predict =(test_predict>0.5)
 
 y_test = (test['was_canceled']>0.5)
 
+# Just if one model is trained
+if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)):
 
-
-#Ploting confusion matrix
-
-cm = confusion_matrix(y_test, test_predict, labels=[0,1])
-disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-                              display_labels=['nicht_storniert','storniert'])
-
-disp.plot(cmap=plt.cm.Blues)
-
-plt.show()
-
-#Saving model
-#model.save("./models/sonnenschein")
+    # Ploting confusion matrix
+    
+    cm = confusion_matrix(y_test, test_predict, labels=[0,1])
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm,
+                                  display_labels=['nicht_storniert','storniert'])
+    
+    disp.plot(cmap=plt.cm.Blues)
+    
+    plt.show()
+    
+    # Saving model
+    model.save("./models/sonnenschein")
