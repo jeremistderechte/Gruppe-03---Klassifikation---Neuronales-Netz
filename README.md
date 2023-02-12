@@ -16,6 +16,8 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 3. `flask run` eingeben
 4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000)
 
+![image](https://user-images.githubusercontent.com/116145963/218327568-8a1a86ca-c2e5-44f1-b3a4-da0dbd6365f3.png)
+
 # Training
 
 ![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png)
