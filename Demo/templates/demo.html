@@ -2,7 +2,7 @@
 <title>Demoseite</title>
 <body>
     <h1>Willkommen beim Sonnenschein AG Angebotsmacher (SNAM)</h1>
-    <p>Bitte Parameter des Kunden eingeben</p>
+    <p>Bitte Informationen ueber den Kunden eingeben</p>
     <form method="post">
         <label for="age">Alter:</label><br>
         <input type="text" id="age" name="age"><br>
@@ -14,16 +14,23 @@
         <option value="bar">Bar</option>
         <option value="check">Check</option>
         </select>
-        <br>
-        <br>
-        <br>
+        <br><br><br>
         <label for="gender">Bitte Geschlecht angeben:</label>
         <br>
         <select name="gender" id="gender">
         <option value="male">maenlich</option>
         <option value="female">weiblich</option>
         </select>
+        <br>
+        <br>
+        <input type="radio" id="cautious" name="prediction_security" value="cautious" checked="checked">
+        <label for="cautious">vorsichtig</label>
+        <br>
+        <input type="radio" id="risky" name="prediction_security" value="risky">
+        <label for="risky">aggressiv</label>
         <br><br>
         <input type="submit" value="Abschicken">
+        <br><br>
       </form>
 </body>
+<footer>&#169; Copyright 2023 Jeremy Barenkamp</footer>
