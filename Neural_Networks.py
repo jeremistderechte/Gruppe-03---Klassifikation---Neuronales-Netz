@@ -176,11 +176,11 @@ y_test = (test['was_canceled']>0.1)
 
 # Write comment into list to test best parameters
 
-neuron_list = [32, 16] #512, 256, 128, 64, 32, 16, 8, 4
+neuron_list = [512, 256, 128, 64, 32, 16, 8, 4] #512, 256, 128, 64, 32, 16, 8, 4
 
-batch_size_list = [64]# 1, 2, 4, 8, 16, 32, 64, 128, 256
+batch_size_list = [1, 2, 4, 8, 16, 32, 64, 128, 256]# 1, 2, 4, 8, 16, 32, 64, 128, 256
 
-epoch_list = [180] # 5, 10, 30, 90, 180
+epoch_list = [5, 10, 30, 90, 180] # 5, 10, 30, 90, 180
 
 
 
