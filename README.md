@@ -23,6 +23,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 # Training
 
+## Python mit Keras
 ![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png)
 
 | metric | result |
@@ -30,6 +31,13 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 | precision | 0.843 |
 | recall | 0.804 |
 | accuracy | 0.813 |
+
+## Knime
+
+![image](https://user-images.githubusercontent.com/116145963/218550708-7bb0d4b6-2441-4d47-96cc-a16a674dc128.png)
+
+![image](https://user-images.githubusercontent.com/116145963/218550747-5661cb20-cc06-48ac-8460-de1cd9f08ea0.png)
+
 
 # Evaluation (threshold)
 
