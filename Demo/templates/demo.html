@@ -1,8 +1,44 @@
 <!DOCTYPE html>
 <title>Demoseite</title>
+<html>
+  <style>
+    input[type=text], select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    input[type=submit] {
+      width: 100%;
+      background-color: #4CAF50;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    input[type=submit]:hover {
+      background-color: #45a049;
+    }
+    
+    div {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+    h1, body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+    </style>
 <body>
-    <h1>Willkommen beim Sonnenschein AG Angebotsmacher (SNAM)</h1>
-    <p>Bitte Informationen ueber den Kunden eingeben</p>
+    <h1>Willkommen beim Sonnenschein AG Stornierungsvorhersager (SNSV)</h1>
+    <h2>Bitte Informationen über den Kunden eingeben</h2>
     <form method="post">
         <label for="age">Alter:</label><br>
         <input type="text" id="age" name="age"><br>
@@ -10,27 +46,29 @@
         <label for="pay_type">Bitte Bezahlmethode angeben:</label>
         <br>
         <select name="pay_type" id="pay_type">
-        <option value="kreditkarte">Kreditkarte</option>
-        <option value="bar">Bar</option>
-        <option value="check">Check</option>
+          <option value="kreditkarte">Kreditkarte</option>
+          <option value="bar">Bar</option>
+          <option value="check">Check</option>
         </select>
         <br><br><br>
         <label for="gender">Bitte Geschlecht angeben:</label>
         <br>
         <select name="gender" id="gender">
-        <option value="male">maenlich</option>
+        <option value="male">männlich</option>
         <option value="female">weiblich</option>
         </select>
         <br>
         <br>
+        <p>Threshold Einstellung (Setze Hoch, für erhöhte Genauigkeit auf Kosten des Verlust von potenziellen stornierenden Kunden):</p>
         <input type="radio" id="cautious" name="prediction_security" value="cautious" checked="checked">
-        <label for="cautious">vorsichtig</label>
+        <label for="cautious">Normal</label>
         <br>
         <input type="radio" id="risky" name="prediction_security" value="risky">
-        <label for="risky">aggressiv</label>
+        <label for="risky">Hoch</label>
         <br><br>
         <input type="submit" value="Abschicken">
         <br><br>
       </form>
 </body>
 <footer>&#169; Copyright 2023 Jeremy Barenkamp</footer>
+</html>
