@@ -16,7 +16,8 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 3. `flask run` eingeben
 4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000)
 
-![image](https://user-images.githubusercontent.com/116145963/218327568-8a1a86ca-c2e5-44f1-b3a4-da0dbd6365f3.png)
+![image](https://user-images.githubusercontent.com/116145963/220192295-d9bb395b-1fd5-49a6-a7ad-52963156e9ae.png)
+
 
 5. Daten des Kundens eingeben und auf `Abschicken` klicken, um Ergebnis zu bekommen
 6. Neue Seite mit dem Ergebnis sollte sich oeffnen
