@@ -15,13 +15,11 @@ Runs on CPU even if compatible gpu is installed, because gpu is slower in this c
 '''
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
-    
-
-
 
 from datetime import datetime
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 #from sklearn.preprocessing import MinMaxScaler
 
@@ -124,7 +122,7 @@ df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_dat
 
 
 
-#df_data_new.to_csv("cleanend.csv")
+df_data_new.to_csv("cleanend.csv")
 
 #Train-Test-Split
 
@@ -171,16 +169,16 @@ output = np.asarray(train["was_canceled"])
 y_test = (test['was_canceled']>0.1)
 
 
-# Best result: 32 64 180
+# Best result: Neuron = 128 batchsize = 8 epochs = 20
 
 
 # Write comment into list to test best parameters
 
-neuron_list = [512, 256, 128, 64, 32, 16, 8, 4] #512, 256, 128, 64, 32, 16, 8, 4
+neuron_list = [256] #512, 256, 128, 64, 32, 16, 8, 4
 
-batch_size_list = [1, 2, 4, 8, 16, 32, 64, 128, 256]# 1, 2, 4, 8, 16, 32, 64, 128, 256
+batch_size_list = [1]# 1, 2, 4, 8, 16, 32, 64, 128, 256
 
-epoch_list = [5, 10, 30, 90, 180] # 5, 10, 30, 90, 180
+epoch_list = [20] # 5, 10, 30, 90, 180
 
 
 
@@ -199,18 +197,25 @@ df_results_neural_network = pd.DataFrame(columns=["parameter", "precision", "rec
 # Neural Network
     
 
-for neuron in neuron_list:
-    model = Sequential()
-    model.add(Dense(neuron, input_shape=(3,), activation='relu'))
-    model.add(Dense(neuron/2, activation='relu'))
-    model.add(Dense(1, activation="sigmoid"))
-    
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+for epoch in epoch_list:
+
     #print(model.summary())
     
     for batch_size in batch_size_list:
-        for epoch in epoch_list:
-            model.fit(X, output, batch_size=batch_size, epochs=epoch, validation_split=0.1, shuffle=True)
+        for neuron in neuron_list:
+            
+            model = Sequential()
+            model.add(Dense(neuron, input_shape=(3,), activation='relu'))
+            model.add(Dense(neuron/2, activation='relu'))
+            model.add(Dense(1, activation="sigmoid"))
+            
+            model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+            
+            
+            #callbacks=[EarlyStopping(monitor='val_loss', patience=3, min_delta=0.0001)]
+            
+            model.fit(X, output, batch_size=batch_size, epochs=epoch, validation_split=0.1, shuffle=True,
+                      )
             
             print("Neurons:", neuron, "Batch_Size:", batch_size,"Epochs:", epoch, "\n")
             
@@ -253,4 +258,4 @@ if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)):
     plt.show()
     
     # Saving model
-    model.save("./models/sonnenschein")
+    #model.save("./models/sonnenschein")
