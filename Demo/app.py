@@ -43,7 +43,7 @@ def return_cancel_proba(age, sex, payment_type, threshold):
     if prediction > threshold:
         result = "Bitte Kunden Angebot schicken"
     else:
-        result = "Kundem muss kein Angebot gemacht werden"
+        result = "Dem Kunden muss kein Angebot gemacht werden"
         
     
     return result
