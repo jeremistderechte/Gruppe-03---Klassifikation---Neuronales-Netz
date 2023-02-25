@@ -56,7 +56,7 @@ def start():
         payment_type = request.form["pay_type"]
         gender = request.form["gender"]
         if request.form.get("prediction_security") == "cautious":
-            threshold = 0.7
+            threshold = 0.64
         elif request.form.get("prediction_security") == "risky":
             threshold = 0.5
         cancel_prediction = return_cancel_proba(age, gender, payment_type, threshold)
