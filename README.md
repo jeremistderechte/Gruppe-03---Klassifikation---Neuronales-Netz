@@ -25,17 +25,24 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 # Training
 
 ## Python mit Keras
-![image](https://user-images.githubusercontent.com/116145963/218286288-a62faea0-07c2-412c-8d57-9bc106949f7e.png)
+![Download](https://user-images.githubusercontent.com/116145963/221373853-06e7b081-ca65-47b6-b0d6-f8268c60a34e.png)
 
 | metric | result |
 | --- | --- |
-| precision | 0.843 |
-| recall | 0.804 |
+| precision | 0.821 |
+| recall | 0.803 |
 | accuracy | 0.813 |
 
 ## Knime
 
-![image](https://user-images.githubusercontent.com/116145963/218550708-7bb0d4b6-2441-4d47-96cc-a16a674dc128.png)
+![Download (3)](https://user-images.githubusercontent.com/116145963/221373882-1bb34dc9-a582-42d1-9bdc-cf388e937099.png)
+
+| metric | result |
+| --- | --- |
+| precision | 0.707 |
+| recall | 0.691 |
+| accuracy | 0.717 |
+
 
 ![image](https://user-images.githubusercontent.com/116145963/218550747-5661cb20-cc06-48ac-8460-de1cd9f08ea0.png)
 
