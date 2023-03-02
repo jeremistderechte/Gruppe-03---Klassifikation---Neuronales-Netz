@@ -59,38 +59,3 @@ Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit
 ## Confusion Matrix mit threshold
 
 ![threshold_cm](https://user-images.githubusercontent.com/116145963/221374217-b77781b1-c1a3-4a94-961d-bf67b509f238.png)
-
-
-
-# Sonstiges
-<details><summary>Organisation</summary>
-<p>
-
-## Theorie
-- 20 Minuten
-
-### Literaturrecherche 
-- Hanna hat schon damit angefangen
-	- Zeitstrahl für PNN
-	- Einordnung von Neuronalen Netzen
-
-## Praxis 
-- 20 Minuten
-
-### Knime
-- Eike hat damit angefangen
-
-### Python Code
-- Jeremy hat damit angefangen (fertig, nur noch refactoring)
-- Demo, Praxis Beispiel (fertig)
-
-
-# Präsentation an sich
-- Hanna kann das
-- Hanna und Eike?
-
-</p>
-</details>
-
-
-
