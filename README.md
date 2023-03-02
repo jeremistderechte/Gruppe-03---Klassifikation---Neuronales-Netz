@@ -14,7 +14,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 1. Repository clonen
 2. Terminal/Shell in Ordner `Demo` öffnen
 3. `flask run` eingeben
-4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000)
+4. localhost (127.0.0.1) im Webbrowser öffnen (Standardport 5000), wurde auch waehrend der Praesentation gehostet
 
 ![image](https://user-images.githubusercontent.com/116145963/220192295-d9bb395b-1fd5-49a6-a7ad-52963156e9ae.png)
 
