@@ -9,12 +9,22 @@ Created on Tue Feb  7 08:48:22 2023
 #Demo for 'Introduction to data science'
 from flask import Flask, render_template, request
 from tensorflow import keras
+import pickle
+import numpy as np
+import pandas as pd
+
+model = keras.models.load_model('sonnenschein')
+with open("encoder", "rb") as f: 
+    encoder = pickle.load(f) 
+    
+with open("scaler", "rb") as f: 
+    scaler = pickle.load(f) 
 
 app = Flask(__name__)
 
 
 def return_cancel_proba(age, sex, payment_type, threshold):
-    model = keras.models.load_model('sonnenschein')
+    
     
     #Conversion to numeric numbers
     
@@ -31,13 +41,22 @@ def return_cancel_proba(age, sex, payment_type, threshold):
         payment_type = 2
         
     
-    age = int(age)
-    sex= int(sex)
-    payment_type = int(payment_type)
+    age = np.asarray(int(age))
+    age = scaler.transform(age.reshape(-1,1))
+
+    sex = int(sex)
+    
+    payment_type = np.asarray(int(payment_type))
+    payment_type = encoder.transform(payment_type.reshape(1,1))
+
+    
+    df_input_data = pd.DataFrame(payment_type, columns = ['kreditkarte','bar','check'])
+    df_input_data['sex'] = [sex]
+    df_input_data['age'] = age
 
     #Let the model predict, if use cancels or not
     
-    prediction = model.predict([[age, sex, payment_type]])
+    prediction = model.predict(df_input_data.to_numpy())
     print(prediction)
     
     if prediction > threshold:
@@ -56,9 +75,9 @@ def start():
         payment_type = request.form["pay_type"]
         gender = request.form["gender"]
         if request.form.get("prediction_security") == "cautious":
-            threshold = 0.64
-        elif request.form.get("prediction_security") == "risky":
             threshold = 0.5
+        elif request.form.get("prediction_security") == "risky":
+            threshold = 0.63
         cancel_prediction = return_cancel_proba(age, gender, payment_type, threshold)
         return render_template('result.html', description=cancel_prediction)
         
