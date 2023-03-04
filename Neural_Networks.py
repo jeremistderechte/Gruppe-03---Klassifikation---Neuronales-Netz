@@ -9,23 +9,31 @@ import pandas as pd
 import numpy as np
 import tensorflow as tf
 import re
-
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler
 '''
 Runs on CPU even if compatible gpu is installed, because gpu is slower in this case
 '''
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = '-1'
-
+import pickle
 from datetime import datetime
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
 #from sklearn.preprocessing import MinMaxScaler
-
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_score, recall_score, accuracy_score
+
+
+
+
+################## ################## ##################
+
+
+
 
 #Factorization of Label (means "string to int")
 def factorize_label(dataframe):
@@ -72,19 +80,6 @@ df_data_new["last_transaction"] = df_data["Letzte Transaktion"]
 df_data_new["cancel_date"] = df_data["Stornierungsdatum"]
 df_data_new["was_canceled"] = was_canceled
 
-#Data Exploration
-
-#maybe correlation
-#print(Counter(df_data_new["age"][df_data_new["was_canceled"] == 1]))
-#print(Counter(df_data_new["sex"][df_data_new["was_canceled"] == 1]))
-#print(Counter(df_data_new["payment_type"][df_data_new["was_canceled"] == 1]))
-
-
-#no correlation
-#print(Counter(df_data_new["last_transaction"][df_data_new["was_canceled"] == 1]))
-#print(Counter(df_data_new["postal_code"][df_data_new["was_canceled"] == 1])) 
-#print(Counter(df_data_new["cancel_date"][df_data_new["was_canceled"] == 1]))
-
 
 #Converting String to datetime
 storno_cleaned_list = []
@@ -111,18 +106,15 @@ for i, row in df_dates.iterrows():
     differnce_list_day.append(abs(row['cancel_date'].day - row['last_date'].day))
     
 
-
 #Drop obsolete columns
 df_data_new = df_data_new.drop(["last_transaction", "cancel_date", "postal_code"], axis=1)
 
 #Factorize input
 df_data_new, string_factorize_sex, string_factorize_pay = factorize_label(df_data_new)
 
-#df_data_new = df_data_new.sample(frac=1)
 
-
-
-df_data_new.to_csv("cleanend.csv")
+#Saving cleaned data
+#df_data_new.to_csv("cleanend.csv")
 
 #Train-Test-Split
 
@@ -134,32 +126,73 @@ print("Gefundene GPUs", tf.config.list_physical_devices('GPU'))
 
 #Neural Network
 
+onehot_encoder = OneHotEncoder(sparse=False)
+
+scaler = MinMaxScaler(feature_range=(0,1))
+
 #X-train
 
 age = np.asarray(train["age"])
 
-#age = MinMaxScaler(feature_range=(0,1)).fit_transform(age.reshape(-1,1))
+age = scaler.fit_transform(age.reshape(-1,1))
 
-#age = age.reshape(788,)
+age = age.reshape(788,)
 
 sex = np.asarray(train["sex"].astype("int32"))
 
 payment_type = np.asarray(train["payment_type"].astype("int32"))
 
-X = np.stack((age, sex, payment_type), axis=-1)
+payment_type = payment_type.reshape(len(payment_type), 1)
+
+
+payment_type = onehot_encoder.fit_transform(payment_type)
+
+df_hot_encoded = pd.DataFrame(payment_type, columns = ['kreditkarte','bar','check'])
+df_hot_encoded["sex"] = sex
+df_hot_encoded["age"] = age
+
+X = df_hot_encoded.to_numpy()
+
+
+
+
+#X = np.stack((age, sex, payment_type), axis=-1)
 
 #X-Test
 
 age_test = np.asarray(test["age"])
 
-#age_test = MinMaxScaler(feature_range=(0,1)).fit_transform(age_test.reshape(-1,1))
+age_test = scaler.transform(age_test.reshape(-1,1))
 
-#age_test = age_test.reshape(198,)
+age_test = age_test.reshape(198,)
 
 sex_test = np.asarray(test["sex"].astype("int32"))
 
+
 payment_type_test = np.asarray(test["payment_type"].astype("int32"))
-X_Test = np.stack((age_test, sex_test, payment_type_test), axis=-1)
+
+payment_type_test = payment_type_test.reshape(len(payment_type_test), 1)
+
+payment_type_test = onehot_encoder.transform(payment_type_test)
+
+df_hot_encoded_test = pd.DataFrame(payment_type_test, columns = ['kreditkarte','bar','check'])
+df_hot_encoded_test["sex"] = sex_test
+df_hot_encoded_test["age"] = age_test
+
+X_Test = df_hot_encoded_test.to_numpy()
+
+df_hot_encoded_test.to_csv("test_data_hot_encoded.csv")
+
+# =============================================================================
+# with open("encoder", "wb") as f: 
+#     pickle.dump(onehot_encoder, f)
+#     
+# with open("scaler", "wb") as f: 
+#     pickle.dump(scaler, f)
+# =============================================================================
+
+
+#X_Test = np.stack((age_test, sex_test, payment_type_test), axis=-1)
 
 
 #Y-Train
@@ -168,25 +201,25 @@ output = np.asarray(train["was_canceled"])
 #Y-Test
 y_test = (test['was_canceled']>0.1)
 
+#y_test.to_csv("y_test.csv")
 
-# Best result: Neuron = 128 batchsize = 8 epochs = 20
+
+# Best result: Neuron = 128 batchsize = 8 epochs = 10
 
 
 # Write comment into list to test best parameters
 
-neuron_list = [256] #512, 256, 128, 64, 32, 16, 8, 4
+neuron_list = [128] #512, 256, 128, 64, 32, 16, 8, 4
 
-batch_size_list = [1]# 1, 2, 4, 8, 16, 32, 64, 128, 256
+batch_size_list = [8]# 1, 2, 4, 8, 16, 32, 64, 128, 256
 
-epoch_list = [20] # 5, 10, 30, 90, 180
+epoch_list = [10] # 5, 10, 30, 90, 180
 
 
 
 precision_list = []
 recall_list = []
 accuracy_list = []
-
-
 parameter_list = []
 
 
@@ -205,7 +238,7 @@ for epoch in epoch_list:
         for neuron in neuron_list:
             
             model = Sequential()
-            model.add(Dense(neuron, input_shape=(3,), activation='relu'))
+            model.add(Dense(neuron, input_shape=(5,), activation='relu'))
             model.add(Dense(neuron/2, activation='relu'))
             model.add(Dense(1, activation="sigmoid"))
             
@@ -245,7 +278,7 @@ test_predict =(test_predict>0.5)
 y_test = (test['was_canceled']>0.5)
 
 # Just if one model is trained
-if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)):
+if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)) == 1:
 
     # Ploting confusion matrix
     
@@ -259,3 +292,20 @@ if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)):
     
     # Saving model
     #model.save("./models/sonnenschein")
+
+
+
+
+
+#Data Exploration
+
+#maybe correlation
+#print(Counter(df_data_new["age"][df_data_new["was_canceled"] == 1]))
+#print(Counter(df_data_new["sex"][df_data_new["was_canceled"] == 1]))
+#print(Counter(df_data_new["payment_type"][df_data_new["was_canceled"] == 1]))
+
+
+#no correlation
+#print(Counter(df_data_new["last_transaction"][df_data_new["was_canceled"] == 1]))
+#print(Counter(df_data_new["postal_code"][df_data_new["was_canceled"] == 1])) 
+#print(Counter(df_data_new["cancel_date"][df_data_new["was_canceled"] == 1]))
