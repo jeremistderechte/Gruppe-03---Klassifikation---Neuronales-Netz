@@ -8,6 +8,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 - tensorflow (cpu oder gpu)
 - numpy
 - matplotlib
+- pickle
 - flask (benoetigt fuer Demo)
 
 # Demo starten
