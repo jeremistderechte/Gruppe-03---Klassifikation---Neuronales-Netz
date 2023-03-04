@@ -26,13 +26,13 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 # Training
 
 ## Python mit Keras
-![Download](https://user-images.githubusercontent.com/116145963/221373853-06e7b081-ca65-47b6-b0d6-f8268c60a34e.png)
+![image](https://user-images.githubusercontent.com/116145963/222932056-fa9ec173-7140-42eb-b5db-a00d81564823.png)
 
 | metric | result |
 | --- | --- |
-| precision | 0.821 |
-| recall | 0.803 |
-| accuracy | 0.813 |
+| precision | 0.845 |
+| recall | 0.813 |
+| accuracy | 0.812 |
 
 ## Knime
 
