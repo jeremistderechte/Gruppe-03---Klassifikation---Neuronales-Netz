@@ -26,7 +26,8 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 # Training
 
 ## Python mit Keras
-![image](https://user-images.githubusercontent.com/116145963/222932056-fa9ec173-7140-42eb-b5db-a00d81564823.png)
+![image](https://user-images.githubusercontent.com/116145963/222932073-2b14f502-0747-4552-b063-d72eb22b6d9a.png)
+
 
 | metric | result |
 | --- | --- |
