@@ -51,7 +51,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 
 # Evaluation (threshold)
 
-![Download (2)](https://user-images.githubusercontent.com/116145963/221374111-28b7bddb-7ba0-4801-b6a2-c87ecf719b97.png)
+![image](https://user-images.githubusercontent.com/116145963/222956923-cd2d2002-4915-4a76-91bc-59a1141c542d.png)
 
 
 Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit man auf Kosten von predictions weniger FPs generiert, was für diesen Use Case sinnvoll sein kann.
