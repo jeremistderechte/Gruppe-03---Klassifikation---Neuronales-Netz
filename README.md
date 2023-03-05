@@ -60,5 +60,6 @@ Man kann mit dem threshold arbeiten, welcher als "Steuerinstrument" dient, damit
 
 
 ## Confusion Matrix mit threshold
+![confusion_matrix_threshold](https://user-images.githubusercontent.com/116145963/222957123-4188d596-1e88-4624-937f-b49e78fb45ac.png)
 
-![threshold_cm](https://user-images.githubusercontent.com/116145963/221374217-b77781b1-c1a3-4a94-961d-bf67b509f238.png)
+
