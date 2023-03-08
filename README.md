@@ -9,7 +9,7 @@ Willkommen bei unserer Lösung zur Klassifikation mit einem neuronalen Netz.
 - numpy
 - matplotlib
 - pickle
-- flask (benoetigt fuer Demo)
+- flask (zusaetzlich benoetigt fuer Demo)
 
 # Demo starten
 1. Repository clonen
