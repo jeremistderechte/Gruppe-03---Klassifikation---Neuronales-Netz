@@ -230,10 +230,7 @@ df_results_neural_network = pd.DataFrame(columns=["parameter", "precision", "rec
 # Neural Network
     
 
-for epoch in epoch_list:
-
-    #print(model.summary())
-    
+for epoch in epoch_list: 
     for batch_size in batch_size_list:
         for neuron in neuron_list:
             
