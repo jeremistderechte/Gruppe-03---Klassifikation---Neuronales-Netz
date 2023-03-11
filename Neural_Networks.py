@@ -285,8 +285,6 @@ if (len(neuron_list) == 1 and len(batch_size_list) == 1 and len(epoch_list)) == 
     
     disp.plot(cmap=plt.cm.Blues)
     
-    plt.show()
-    
     # Saving model
     #model.save("./models/sonnenschein")
 
